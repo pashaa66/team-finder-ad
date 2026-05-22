@@ -70,11 +70,39 @@ def change_password(request):
 
 def participants_list(request):
     qs = User.objects.filter(is_active=True).order_by('id')
+    active_filter = None
+
+    if request.user.is_authenticated:
+        active_filter = request.GET.get('filter')
+        me = request.user
+        if active_filter == 'owners-of-favorite-projects':
+            fav_ids = me.favorites.values_list('id', flat=True)
+            qs = User.objects.filter(owned_projects__id__in=fav_ids).distinct()
+        elif active_filter == 'owners-of-participating-projects':
+            my_project_ids = me.participated_projects.values_list(
+                'id', flat=True
+            )
+            qs = User.objects.filter(
+                owned_projects__id__in=my_project_ids
+            ).distinct()
+        elif active_filter == 'interested-in-my-projects':
+            my_project_ids = me.owned_projects.values_list('id', flat=True)
+            qs = User.objects.filter(
+                favorites__id__in=my_project_ids
+            ).distinct()
+        elif active_filter == 'participants-of-my-projects':
+            my_project_ids = me.owned_projects.values_list('id', flat=True)
+            qs = User.objects.filter(
+                participated_projects__id__in=my_project_ids
+            ).distinct()
 
     paginator = Paginator(qs, 12)
     page_obj = paginator.get_page(request.GET.get('page'))
     return render(
         request,
         'users/participants.html',
-        {'page_obj': page_obj, 'active_filter': None},
+        {
+            'page_obj': page_obj,
+            'active_filter': active_filter,
+        },
     )

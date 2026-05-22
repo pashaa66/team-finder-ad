@@ -13,7 +13,7 @@ def project_list(request):
     paginator = Paginator(projects, 12)
     page_obj = paginator.get_page(request.GET.get('page'))
     return render(
-        request, 'projects/project_list.html', {'projects': page_obj}
+        request, 'projects/project_list.html', {'page_obj': page_obj}
     )
 
 
