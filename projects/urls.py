@@ -17,4 +17,10 @@ urlpatterns = [
     ),
     path('create-project/', views.create_project, name='create'),
     path('<int:project_id>/edit/', views.edit_project, name='edit'),
+    path('favorites/', views.favorites_list, name='favorites'),
+    path(
+        '<int:project_id>/toggle-favorite/',
+        views.toggle_favorite,
+        name='toggle_favorite',
+    ),
 ]

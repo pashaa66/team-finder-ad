@@ -94,3 +94,25 @@ def edit_project(request, project_id):
         'projects/create-project.html',
         {'form': form, 'is_edit': True},
     )
+
+
+@login_required
+@require_POST
+def toggle_favorite(request, project_id):
+    project = get_object_or_404(Project, pk=project_id)
+    user = request.user
+    if project in user.favorites.all():
+        user.favorites.remove(project)
+        favorited = False
+    else:
+        user.favorites.add(project)
+        favorited = True
+    return JsonResponse({'status': 'ok', 'favorited': favorited})
+
+
+@login_required
+def favorites_list(request):
+    projects = request.user.favorites.all().order_by('-created_at')
+    return render(
+        request, 'projects/favorite_projects.html', {'projects': projects}
+    )
