@@ -15,4 +15,6 @@ urlpatterns = [
         views.toggle_participate,
         name='toggle_participate',
     ),
+    path('create-project/', views.create_project, name='create'),
+    path('<int:project_id>/edit/', views.edit_project, name='edit'),
 ]
