@@ -38,10 +38,12 @@ def toggle_participate(request, project_id):
 
     if user in project.participants.all():
         project.participants.remove(user)
+        participating = False
     else:
         project.participants.add(user)
+        participating = True
 
-    return JsonResponse({'status': 'ok'})
+    return JsonResponse({'status': 'ok', 'participant': participating})
 
 
 @login_required
