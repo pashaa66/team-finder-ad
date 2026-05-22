@@ -56,6 +56,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
+    favorites = models.ManyToManyField(
+        'projects.Project',
+        blank=True,
+        related_name='interested_users',
+    )
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['name', 'surname']
 
