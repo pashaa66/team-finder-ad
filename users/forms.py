@@ -1,6 +1,7 @@
 import re
 
 from django import forms
+from django.contrib.auth.forms import PasswordChangeForm
 from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
 
@@ -72,3 +73,11 @@ class EditProfileForm(forms.ModelForm):
             )
 
         return url
+
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['old_password'].label = 'Старый пароль'
+        self.fields['new_password1'].label = 'Новый пароль'
+        self.fields['new_password2'].label = 'Подтвердите пароль'
