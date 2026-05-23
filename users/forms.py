@@ -2,14 +2,14 @@ import re
 
 from django import forms
 from django.contrib.auth.forms import PasswordChangeForm
-from django.core.exceptions import ValidationError
-from django.core.validators import URLValidator
+
+from team_finder.mixins import GithubUrlMixin
 
 from .models import User
 
 
 class RegisterForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
+    password = forms.CharField(widget=forms.PasswordInput, label='Пароль')
 
     class Meta:
         model = User
@@ -28,7 +28,7 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput)
 
 
-class EditProfileForm(forms.ModelForm):
+class EditProfileForm(GithubUrlMixin, forms.ModelForm):
     class Meta:
         model = User
         fields = ['name', 'surname', 'avatar', 'about', 'phone', 'github_url']
@@ -49,30 +49,6 @@ class EditProfileForm(forms.ModelForm):
         if qs.exists():
             raise forms.ValidationError('Этот номер уже используется.')
         return phone
-
-    def clean_github_url(self):
-        url = self.cleaned_data.get('github_url', '').strip()
-        if not url:
-            return url
-
-        validate_url = URLValidator()
-        try:
-            validate_url(url)
-        except ValidationError:
-            raise forms.ValidationError('Введите корректный URL-адрес.')
-
-        url_lower = url.lower()
-        if not (
-            url_lower.startswith('https://github.com')
-            or url_lower.startswith('http://github.com')
-            or url_lower.startswith('https://www.github.com')
-            or url_lower.startswith('http://www.github.com')
-        ):
-            raise forms.ValidationError(
-                'Ссылка должна вести именно на GitHub.'
-            )
-
-        return url
 
 
 class CustomPasswordChangeForm(PasswordChangeForm):

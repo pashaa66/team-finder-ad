@@ -8,6 +8,7 @@ from django.contrib.auth.models import (
 )
 from django.core.files.base import ContentFile
 from django.db import models
+from django.urls import reverse
 from PIL import Image, ImageDraw, ImageFont
 
 from .constants import (
@@ -71,6 +72,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         if not self.pk and not self.avatar:
             self.generate_avatar()
         super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('users:detail', kwargs={'user_id': self.pk})
 
     def generate_avatar(self):
         letter = self.name[0].upper() if self.name else '?'
