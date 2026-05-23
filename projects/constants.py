@@ -1,0 +1,9 @@
+STATUS_OPEN = 'open'
+STATUS_CLOSED = 'closed'
+STATUS_CHOICES = [
+    (STATUS_OPEN, 'Открыт'),
+    (STATUS_CLOSED, 'Закрыт'),
+]
+PROJECTS_PER_PAGE = 12
+PROJECT_NAME_MAX_LENGTH = 200
+PROJECT_STATUS_MAX_LENGTH = max(len(s) for s, _ in STATUS_CHOICES)

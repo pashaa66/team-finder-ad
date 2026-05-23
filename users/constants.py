@@ -1,0 +1,29 @@
+from enum import Enum
+
+
+class AvatarColor(str, Enum):
+    SLATE = '#4F6D7A'
+    BLUE = '#5B8DB8'
+    GREEN = '#6BAA75'
+    PURPLE = '#7B6D8D'
+    BROWN = '#8B635A'
+    OLIVE = '#6B8E6B'
+    INDIGO = '#7A7FAD'
+    TAUPE = '#9A7D6B'
+    DARK_GREEN = '#5C7A6B'
+    DEEP_PURPLE = '#7A5C8B'
+
+
+AVATAR_COLORS = [color.value for color in AvatarColor]
+
+USER_NAME_MAX_LENGTH = 124
+USER_SURNAME_MAX_LENGTH = 124
+USER_PHONE_MAX_LENGTH = 12
+USER_ABOUT_MAX_LENGTH = 256
+USERS_PER_PAGE = 12
+AVATAR_SIZE = 200
+AVATAR_FONT_SIZE_RATIO = 0.5
+AVATAR_FONT_SIZE = int(AVATAR_SIZE * AVATAR_FONT_SIZE_RATIO)
+AVATAR_FONT_PATH = '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'
+AVATAR_TEXT_COLOR = 'white'
+AVATAR_ANCHOR = (0, 0)
